@@ -5,9 +5,14 @@ const totalAmount = document.getElementById('total-amount');
 let expenses = [];
 
 async function fetchExpenses() {
-    const response = await fetch('/api/expenses');
-    expenses = await response.json();
-    displayExpenses();
+    try {
+        const response = await fetch('/api/expenses');
+        if (!response.ok) throw new Error('Network response was not ok');
+        expenses = await response.json();
+        displayExpenses();
+    } catch (error) {
+        console.error('Error fetching expenses:', error);
+    }
 }
 
 expenseForm.addEventListener('submit', async (e) => {
@@ -19,42 +24,28 @@ expenseForm.addEventListener('submit', async (e) => {
 
     const expense = { name: expenseName, amount: expenseAmount, category: expenseCategory, date: expenseDate };
 
-    await fetch('/api/expenses', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(expense),
-    });
-
-    fetchExpenses();
-    expenseForm.reset();
+    try {
+        await fetch('/api/expenses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(expense),
+        });
+        fetchExpenses();
+        expenseForm.reset();
+    } catch (error) {
+        console.error('Error adding expense:', error);
+    }
 });
 
 async function removeExpense(index) {
-    await fetch(`/api/expenses/${index}`, { method: 'DELETE' });
-    fetchExpenses();
+    try {
+        await fetch(`/api/expenses/${index}`, { method: 'DELETE' });
+        expenses.splice(index, 1); // Remove from local array
+        displayExpenses();
+    } catch (error) {
+        console.error('Error removing expense:', error);
+    }
 }
-
-fetchExpenses();
-
-expenseForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const expenseName = document.getElementById('expense-name').value;
-    const expenseAmount = parseFloat(document.getElementById('expense-amount').value);
-    const expenseCategory = document.getElementById('expense-category').value;
-    const expenseDate = document.getElementById('expense-date').value;
-
-    const expense = {
-        name: expenseName,
-        amount: expenseAmount,
-        category: expenseCategory,
-        date: expenseDate,
-    };
-
-    expenses.push(expense);
-    displayExpenses();
-    expenseForm.reset();
-});
 
 function displayExpenses() {
     expenseList.innerHTML = '';
@@ -76,7 +67,5 @@ function displayExpenses() {
     totalAmount.textContent = total.toFixed(2);
 }
 
-function removeExpense(index) {
-    expenses.splice(index, 1);
-    displayExpenses();
-}
+// Initial fetch to load expenses
+fetchExpenses();
