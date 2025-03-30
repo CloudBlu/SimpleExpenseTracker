@@ -1,43 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple Expense Tracker</title>
-    <link rel="stylesheet" type="text/css" href="stylesheets/style.css"/>
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="js/app.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Expense Tracker</h1>
-        <form id="expense-form">
-            <input type="text" id="expense-name" placeholder="Expense Name" required />
-            <input type="number" id="expense-amount" placeholder="Amount" required />
-            <select id="expense-category" required>
-                <option value="" disabled selected>Select Category</option>
-                <option value="Food">Food</option>
-                <option value="Transport">Transport</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Other">Other</option>
-            </select>
-            <input type="date" id="expense-date" required />
-            <button type="submit">Add Expense</button>
-        </form>
-        <div class="expense-table">
-            <table>
+        
+        <!-- Budget Section -->
+        <div class="section">
+            <h2>Budget</h2>
+            <div id="budget-warning" class="warning"></div>
+            <form id="budget-form">
+                <input type="number" id="budget-amount" placeholder="Amount" required>
+                <input type="month" id="budget-month" required>
+                <button type="submit">Set Budget</button>
+            </form>
+        </div>
+
+        <!-- Budget Display and Warning Section -->
+        <div class="section budget-info">
+            <div id="current-budget"></div>
+            <div id="budget-warning" class="warning"></div>
+            <div id="expense-summary"></div>
+        </div>
+
+        <!-- Add Expense Section -->
+        <div class="section">
+            <h2>Add Expense</h2>
+            <form id="expense-form">
+                <input type="text" id="expense-description" placeholder="Description" required>
+                <input type="number" id="expense-amount" placeholder="Amount" required>
+                <select id="expense-category" required>
+                    <!-- Categories will be populated by JavaScript -->
+                </select>
+                <input type="date" id="expense-date" required>
+                <button type="submit">Add Expense</button>
+            </form>
+        </div>
+
+        <!-- Add Income Section -->
+        <div class="section">
+            <h2>Add Income</h2>
+            <form id="income-form">
+                <input type="text" id="income-description" placeholder="Description" required>
+                <input type="number" id="income-amount" placeholder="Amount" required>
+                <select id="income-category" required>
+                    <!-- Categories will be populated by JavaScript -->
+                </select>
+                <input type="date" id="income-date" required>
+                <button type="submit">Add Income</button>
+            </form>
+        </div>
+
+        <!-- Categories Section -->
+        <div class="section">
+            <h2>Add Custom Category</h2>
+            <form id="category-form">
+                <select id="category-type">
+                    <option value="expense">Expense</option>
+                    <option value="income">Income</option>
+                </select>
+                <input type="text" id="category-name" placeholder="Category Name" required>
+                <button type="submit">Add Category</button>
+                <button type="button" onclick="deleteSelectedCategory()">Delete Category</button>
+            </form>
+        </div>
+
+        
+
+        <!-- Currency Selection Section -->
+        <div class="section">
+            <h2>Currency Selection</h2>
+            <form id="currency-form">
+                <select id="currency-select">
+                    <option value="USD">USD </option>
+                    <option value="NTD">NTD </option>
+                    <option value="IDR">IDR </option>
+                    <option value="EUR">EUR </option>
+                </select>
+                <button type="button" onclick="saveCurrency()">Set as Default</button>
+                <button type="button" onclick="deleteSelectedCurrency()">Delete Currency</button>
+            </form>
+        </div>
+
+        <!-- Add Custom Currency Section -->
+        <div class="section">
+            <h2>Add Custom Currency</h2>
+            <form id="custom-currency-form">
+                <input type="text" id="custom-currency-code" placeholder="Currency Code (e.g., JPY)" required>
+                <button type="submit">Add Currency</button>
+            </form>
+        </div>
+
+
+        <!-- Transactions Table -->
+        <div class="section">
+            <h2>Transactions</h2>
+            <button onclick="exportToExcel()">Export to Excel</button>
+            <table id="transactions-table">
                 <thead>
                     <tr>
-                        <th>Expense Name</th>
-                        <th>Amount</th>
-                        <th>Category</th>
                         <th>Date</th>
-                        <th>Action</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="expense-list"></tbody>
+                <tbody></tbody>
             </table>
-            <div class="total-amount">
-                <strong>Total:</strong> $<span id="total-amount">0</span>
-            </div>
         </div>
     </div>
-    <script src="script.js"></script>
 </body>
 </html>
