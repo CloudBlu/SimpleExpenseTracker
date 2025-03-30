@@ -1,0 +1,11 @@
+{
+    "expenses": [],
+    "incomes": [],
+    "budgets": [],
+    "categories": {
+        "expense": ["Food", "Transportation", "Utilities", "Rent", "Entertainment"],
+        "income": ["Salary", "Freelance", "Investment", "Bonus", "Other"]
+    },
+    "currencies": ["USD", "NTD", "IDR", "EUR"],
+    "selectedCurrency": "NTD"
+}

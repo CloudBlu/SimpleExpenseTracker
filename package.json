@@ -1,16 +1,50 @@
 {
-  "name": "simple-expense-tracker",
-  "version": "0.0.0",
-  "private": true,
+  "name": "simple-expense-tracker-2.0",
+  "productName": "Simple Expense Tracker",
+  "version": "1.0.0",
+  "description": "App to record expenses",
+  "main": "main.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "electron .",
+    "build": "electron-builder"
   },
+  "author": "Hansen & Jenni",
+  "license": "MIT",
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "http-errors": "~1.6.3",
-    "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "toastify-js": "^1.12.0",
+    "xlsx": "^0.18.5"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "electron-builder": "^25.1.8",
+    "electron": "^33.2.1",
+    "nodemon": "^3.1.9"
+  },
+  "build": {
+    "appId": "com.example.simpleexpensetracker",
+    "productName": "Simple Expense Tracker",
+    "files": [
+      "main.js",
+      "server.js",
+      "renderer.js",
+      "public/**/*",
+      "data.json"
+    ],
+    "directories": {
+      "buildResources": "build"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
+
